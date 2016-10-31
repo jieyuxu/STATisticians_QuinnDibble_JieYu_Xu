@@ -9,10 +9,8 @@ int main() {
 	status = stat("file.file", &openfile);
 	printf("===STATISTICAL STATTERY===\n\n");
 	printf("File that has been statted:\tfile.file\n");
-	printf("File size:\t\t%d\n", openfile.st_size);
+	printf("File size:\t\t%ld\n", openfile.st_size);
 	printf("File permissions:\t%o\n", openfile.st_mode);
-	char date [100];
-	printf("%d\n", openfile.st_atim);
-	strcpy(date, ctime(openfile.st_atim));
-	printf("Time of access:\t\t%s\n", date);
+	time_t rawtime = openfile.st_atime;
+	printf("Time of access:\t\t%s\n", ctime(&rawtime));
 }
