@@ -18,30 +18,30 @@ void printSize(struct stat opened) {
 	else if (mb > 0) printf("File size:\t\t%d.%dmb\n", mb, kb);
 	else if (kb > 0) printf("File size:\t\t%d.%dkb\n", kb, b);
 	else printf("File size:\t\t%db\n", b);
-}		
+}
 
+void printhelper(int perms) {
+	printf((perms & 4) ? "r" : "-");
+	printf((perms & 2) ? "w" : "-");
+	printf((perms & 1) ? "x" : "-");
+} //Jerry Chang helped me with this
 void printPermissions(struct stat opened) {
 	int user = (opened.st_mode % 01000) / 0100;
 	int group = (opened.st_mode % 0100) / 010;
 	int other = (opened.st_mode % 010);
-/*	printf("(int) 0775:\t%d\n", (int) 0775 % 1000);
-	int permissions = (int) (opened.st_mode % 1000);
-	int user = permissions / 100;
-	permissions = permissions % 100;
-	int group = permissions / 10;
-	permissions = permissions % 10;
-	int other = permissions;
-*/
-	printf("user:\t%d\ngroup:\t%d\nother:\t%d\n", user, group, other);
+	printf("Permissions:\t\t");
+	printhelper(user);
+	printhelper(group);
+	printhelper(other);
+	printf("\n");
 }
-	
+
 int main() {
 	struct stat openfile;
 	int status;
-	status = stat("stat", &openfile);
+	status = stat("book.txt", &openfile);
 	printf("===STATISTICAL STATTERY===\n\n");
 	printf("File that has been statted:\tfile.file\n");
-	printf("PERMS:\t%o\n", openfile.st_mode);
 	printSize(openfile);
 	printPermissions(openfile);
 	time_t rawtime = openfile.st_atime;
